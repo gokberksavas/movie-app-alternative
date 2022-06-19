@@ -1,6 +1,6 @@
 <script setup>
 import movieEndpoint from '../../helpers/movie-endpoint';
-import { ref, onBeforeMount, computed, watch } from 'vue';
+import { ref, onMounted, computed, watch } from 'vue';
 import MovieCard from '@/components/movie-list/components/MovieCard.vue';
 
 const props = defineProps({
@@ -25,7 +25,7 @@ const getMovies = () => {
     .then(results => movies.value = results)
 };
 
-onBeforeMount(getMovies);
+onMounted(getMovies);
 
 watch(page, () => {
   getMovies();
@@ -42,9 +42,41 @@ watch(page, () => {
         :movie-data="movie"
       />
     </div>
+    <div class="pagination">
+      <div 
+        class="prev-page"
+        @click="page > 1 && page--"
+      >
+        &lt;
+      </div>
+      <div class="current-page">
+        {{ page }}
+      </div>
+      <div 
+        class="next-page"
+        @click="page++"
+      >
+        &gt;
+      </div>
+    </div>
   </div>
 </template>
 
 <style lang="sass" scoped>
+.movie-list-wrapper
+  padding: 5px 30px
   
+  .movie-list
+    display: grid
+    grid-template-columns: repeat(2, 50%)
+    gap: 10px
+
+    @media screen and (min-width: 1440px)
+      grid-template-columns: repeat(3, calc(100%/3))
+
+  .pagination
+    display: flex
+  
+    div
+      padding: 5px
 </style>

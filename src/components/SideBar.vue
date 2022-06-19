@@ -62,5 +62,5 @@ const buttonConfig = [
     flex-direction: column
     align-items: center
     transform: translateX(0)
-    transition: transform 0.4s linear
+    transition: transform 0.1s linear
 </style>
