@@ -15,9 +15,18 @@ const getFullImageUrl = (size, posterPath) => {
 
 <template>
   <div class="movie-wrapper">
-    <img :src="getFullImageUrl(92, movieData.poster_path)">
-    <div>
-      {{ movieData.title }}
+    <img 
+      class="poster" 
+      :src="getFullImageUrl(92, movieData.poster_path)"
+    >
+    <div class="movie-info">
+      <div class="title">
+        {{ movieData.title }}
+      </div>
+      <div class="overview">
+        {{ movieData.overview }}
+      </div>
+      <span class="release-date">{{ movieData.release_date.split('-')[0] }}</span>
     </div>
   </div>
 </template>
@@ -29,8 +38,36 @@ const getFullImageUrl = (size, posterPath) => {
   padding: 5px
   border-width: 1px
   border-style: solid
-  border-color: gray
+  border-color: #666666
+  border-radius: 5px
+  box-shadow: -4px 3px 6px 2px #cccccc
 
-  img
+  .poster
     margin-right: 10px
+
+  .movie-info
+    box-sizing: border-box
+    display: flex
+    height: 100%
+    flex-direction: column
+    justify-content: flex-start
+    padding: 15px 0
+
+    .title
+      margin-bottom: 5px
+      font-weight: 700
+
+    .overview
+      display: -webkit-box
+      -webkit-box-orient: vertical
+      overflow: hidden
+      -webkit-line-clamp: 2
+      font-size: 0.8rem
+      font-style: italic
+    
+    .release-date
+      font-weight: 700
+      font-style: italic
+      font-size: 0.8rem
+      margin-top: auto
 </style>

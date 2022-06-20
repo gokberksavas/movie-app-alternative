@@ -1,6 +1,4 @@
 <script setup>
-import movieEndpoint from '@/helpers/movie-endpoint';
-
 const emit = defineEmits(['togglesidebar']);
 </script>
 
@@ -24,6 +22,10 @@ const emit = defineEmits(['togglesidebar']);
 .header
   height: 110px
   padding: 10px
+  background-color: cadetblue
+  z-index: 3
+  position: sticky
+  top: 0
 
   .header-content
     display: flex

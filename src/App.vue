@@ -1,7 +1,11 @@
 <script setup>
-import HomePage from './pages/HomePage.vue';
+import CommonLayout from './layouts/CommonLayout.vue';
 </script>
 
 <template>
-  <HomePage />
+  <CommonLayout>
+    <template #page-content>
+      <router-view />
+    </template>
+  </CommonLayout>
 </template>

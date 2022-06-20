@@ -68,14 +68,16 @@ watch(page, () => {
   
   .movie-list
     display: grid
-    grid-template-columns: repeat(2, 50%)
-    gap: 10px
+    grid-template-columns: repeat(2, calc(50% - 20px))
+    gap: 20px
 
     @media screen and (min-width: 1440px)
-      grid-template-columns: repeat(3, calc(100%/3))
+      grid-template-columns: repeat(3, calc(100%/3 - 20px))
 
   .pagination
     display: flex
+    justify-content: center
+    padding: 10px 0
   
     div
       padding: 5px

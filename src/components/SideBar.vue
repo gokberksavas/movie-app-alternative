@@ -6,6 +6,8 @@ const props = defineProps({
 
 const buttonConfig = [
   { path: '/', text: 'Home' },
+  { path: '/popular', text: 'Popular'},
+  { path: '/trending', text: 'Trending'},
   { path: '/favourites', text: 'Favourites' }
 ];
 </script>
@@ -24,13 +26,15 @@ const buttonConfig = [
         CLOSE
       </div>
       <h1>Menu</h1>
-      <div
+      <router-link
         v-for="button in buttonConfig"
         :key="button.text + Math.random()"
-        class="sidebar-btn"
+        :to="button.path"
       >
-        {{ button.text }}
-      </div>
+        <div class="sidebar-btn">
+          {{ button.text }}
+        </div>
+      </router-link>
     </div>
   </div>
 </template>
@@ -50,6 +54,7 @@ const buttonConfig = [
   max-width: 275px
   background-color: #eeeeee
   transition: all 0.2s linear
+  min-height: 100vh
 
   .sidebar-close-btn
     position: absolute
@@ -57,6 +62,8 @@ const buttonConfig = [
     top: 3px
 
   .sidebar-content
+    position: sticky
+    top: 0
     padding: 8px
     display: flex
     flex-direction: column
