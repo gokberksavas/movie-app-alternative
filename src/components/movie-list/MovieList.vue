@@ -1,7 +1,9 @@
 <script setup>
 import movieEndpoint from '../../helpers/movie-endpoint';
-import { ref, onMounted, computed, watch } from 'vue';
+import { ref, onMounted, watch, computed, onUpdated } from 'vue';
 import MovieCard from '@/components/movie-list/components/MovieCard.vue';
+import { useRouter, useRoute } from 'vue-router';
+import FilterInput from '@/components/FilterInput.vue'
 
 const props = defineProps({
   blockTitle: {
@@ -16,25 +18,49 @@ const props = defineProps({
 
 //initializing the state and getting initial movies
 const movies = ref([]);
-const page = ref(1);
 const timeWindow = ref('week');
+ 
+const getMovies = async () => {
+  movies.value = await movieEndpoint.getMovies(props.algorithm, page.value, timeWindow.value);
+};
 
-  
-const getMovies = () => {
-  movieEndpoint.getMovies(props.algorithm, page.value, timeWindow.value)
-    .then(results => movies.value = results)
+const changeTimeWindow = (event) => {
+  const selectedTimeWindow = String(event.target.value).toLowerCase();
+
+  timeWindow.value = selectedTimeWindow;
 };
 
 onMounted(getMovies);
 
-watch(page, () => {
-  getMovies();
+//pagination with url parameters
+const router = useRouter();
+const route = useRoute();
+
+const page = computed(() => {
+  return route.query.page || 1;
 });
+
+const goPrevPage = () => {
+  page.value > 1 && router.push({ query: { page: parseInt(page.value) - 1 } });
+};
+
+const goNextPage = () => {
+  router.push({ query: { page: parseInt(page.value) + 1 } });
+};
+
+watch([page, timeWindow], getMovies);
 </script>
 
 <template>
   <div class="movie-list-wrapper">
-    <h2>{{ blockTitle }}</h2>
+    <div class="block-header">
+      <h2>{{ blockTitle }}</h2>
+      <FilterInput 
+        v-if="props.algorithm === 'trending'" 
+        :options="['Week', 'Day']"
+        @dropdownchanged="changeTimeWindow($event)"
+      />
+    </div>
     <div class="movie-list">
       <MovieCard
         v-for="movie in movies" 
@@ -45,7 +71,7 @@ watch(page, () => {
     <div class="pagination">
       <div 
         class="prev-page"
-        @click="page > 1 && page--"
+        @click="goPrevPage"
       >
         &lt;
       </div>
@@ -54,7 +80,7 @@ watch(page, () => {
       </div>
       <div 
         class="next-page"
-        @click="page++"
+        @click="goNextPage"
       >
         &gt;
       </div>
@@ -66,6 +92,14 @@ watch(page, () => {
 .movie-list-wrapper
   padding: 5px 30px
   
+  .block-header
+    display: flex
+    align-items: center
+    padding-right: 20px
+
+    h2
+      flex: 1
+
   .movie-list
     display: grid
     grid-template-columns: repeat(2, calc(50% - 20px))
