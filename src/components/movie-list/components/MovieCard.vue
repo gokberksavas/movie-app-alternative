@@ -9,6 +9,8 @@ const props = defineProps({
   }
 });
 
+const emit = defineEmits(['movieunfavourited']);
+
 const movie = computed(() => props.movieData);
 const  { id, release_date: release, poster_path: poster, title, overview, ...rest} = movie.value;
 
@@ -21,6 +23,7 @@ const getFullImageUrl = (size, posterPath) => {
 const handleFavourite = () => {
   if (isFavourite.value) {
     favourite.removeFromFavourites(id);
+    emit('movieunfavourited');
   } else {
     favourite.addToFavourite(movie.value);
   }

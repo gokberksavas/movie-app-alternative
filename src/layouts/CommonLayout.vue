@@ -12,10 +12,7 @@ const toggleSideBar = (status) => {
 
 <template>
   <div class="common-layout">
-    <SideBar
-      :status="showSideBar"
-      @togglesidebar="toggleSideBar($event)"
-    />
+    <SideBar :status="showSideBar" />
     <div class="layout-inner">
       <PageHeader @togglesidebar="toggleSideBar($event)" />
       <slot name="page-content" />

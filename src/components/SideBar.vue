@@ -1,5 +1,4 @@
 <script setup>
-const emit = defineEmits(['togglesidebar']);
 const props = defineProps({
   status: Boolean
 });
@@ -19,12 +18,6 @@ const buttonConfig = [
     :class="{ 'sidebar-hidden': !props.status }"
   >
     <div class="sidebar-content">
-      <div
-        class="sidebar-close-btn"
-        @click="emit('togglesidebar', false)"
-      >
-        CLOSE
-      </div>
       <h1>Menu</h1>
       <router-link
         v-for="button in buttonConfig"
@@ -55,11 +48,6 @@ const buttonConfig = [
   background-color: #eeeeee
   transition: all 0.2s linear
   min-height: 100vh
-
-  .sidebar-close-btn
-    position: absolute
-    right: 10px
-    top: 3px
 
   .sidebar-content
     position: sticky

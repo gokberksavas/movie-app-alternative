@@ -11,6 +11,7 @@ const emit = defineEmits(['dropdownchanged']);
 
 <template>
   <div class="filter-dropdown">
+    <span>Show Trending Movies of the:&nbsp;</span>
     <select @change="emit('dropdownchanged', $event)">
       <option 
         v-for="option in props.options"
