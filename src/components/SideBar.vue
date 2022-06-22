@@ -1,4 +1,7 @@
 <script setup>
+import { useRoute, useRouter } from 'vue-router'
+import { ref } from 'vue'
+
 const props = defineProps({
   status: Boolean
 });
@@ -9,6 +12,15 @@ const buttonConfig = [
   { path: '/trending', text: 'Trending'},
   { path: '/favourites', text: 'Favourites' }
 ];
+
+const route = useRoute();
+const router = useRouter();
+
+const currentPath = ref(route.path);
+
+router.afterEach(() => {
+  currentPath.value = route.path;
+});
 </script>
 
 
@@ -19,15 +31,16 @@ const buttonConfig = [
   >
     <div class="sidebar-content">
       <h1>Menu</h1>
-      <router-link
+      <div
         v-for="button in buttonConfig"
         :key="button.text + Math.random()"
-        :to="button.path"
+        class="sidebar-btn"
+        :class="{'path-active': button.path === currentPath}"
       >
-        <div class="sidebar-btn">
+        <router-link :to="button.path">
           {{ button.text }}
-        </div>
-      </router-link>
+        </router-link>
+      </div>
     </div>
   </div>
 </template>
@@ -58,4 +71,31 @@ const buttonConfig = [
     align-items: center
     transform: translateX(0)
     transition: transform 0.1s linear
+
+    .sidebar-btn
+      width: 90%
+      display: flex
+      align-items: center
+      background-color: white
+      margin: 5px 0
+      border-radius: 10px
+      cursor: pointer
+      color: #000000
+
+      &.path-active
+        background-color: pink
+
+      a
+        height: 40px
+        padding: 10px
+        width: 100%
+        height: 100%
+        text-transform: none
+        text-decoration: none
+        color: inherit
+
+        &:active
+          color: inherit
+        
+      
 </style>
