@@ -17,5 +17,6 @@
     ],
     "noUnusedLocals": false,
     "noUnusedParameters": false,
+    "experimentalDecorators": true
   }
 }

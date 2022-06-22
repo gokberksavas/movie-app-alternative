@@ -78,16 +78,20 @@ const handleFavourite = () => {
 
   .star-icon
     position: absolute
-    right: 15px
+    right: 10px
     top: 10px
     stroke: #999999
     stroke-width: 30px
     color: #ffffff
+    transition: transform 0.2s ease
+
+    &:hover
+      transform: scale(1.1)
   
   .star-icon.favourited
-    stroke: #e8bb07
+    stroke: $pinkish-red
     stroke-width: 30px
-    color: #e8bb07
+    color: $pinkish-red
 
   .movie-info
     box-sizing: border-box
@@ -95,13 +99,14 @@ const handleFavourite = () => {
     height: 100%
     flex-direction: column
     justify-content: flex-start
-    padding: 15px 0
+    padding: 10px 0
 
     .title
-      margin-bottom: 5px
+      margin-bottom: 10px
       font-weight: 700
       width: 90%
       text-overflow: ellipsis
+      font-size: 0.8rem
 
     .overview
       display: -webkit-box

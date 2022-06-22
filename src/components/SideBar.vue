@@ -62,7 +62,7 @@ router.afterEach(() => {
   position: relative
   width: 20%
   max-width: 275px
-  background-color: #eeeeee
+  background-color: $pinkish-red
   transition: all 0.2s linear
   min-height: 100vh
 
@@ -73,24 +73,30 @@ router.afterEach(() => {
     display: flex
     flex-direction: column
     align-items: center
+    color: $icy-white
     transform: translateX(0)
-    transition: transform 0.1s linear
+    transition: transform 0.2s linear
+
+    h1
+      font-weight: 500
 
     .sidebar-btn
       width: 90%
       display: flex
       align-items: center
-      background-color: white
+      background-color: inherit
       margin: 5px 0
       border-radius: 10px
       cursor: pointer
-      color: #000000
+      font-size: .9rem
 
       .sidebar-btn-icon
-        margin-right: 5px
+        margin-right: 8px
+        font-size: 1.1rem
 
       &.path-active
-        background-color: pink
+        background-color: $icy-white
+        color: $darkblue
 
       a
         height: 40px

@@ -23,3 +23,13 @@ const emit = defineEmits(['dropdownchanged']);
     </select>
   </div>
 </template>
+
+<style lang="sass" scoped>
+.filter-dropdown
+  display: flex
+  align-items: center
+  font-size: 0.8rem
+  
+  span
+    font-weight: 500
+</style>

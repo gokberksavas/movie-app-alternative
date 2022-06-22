@@ -37,6 +37,7 @@ const handleUnFavourite = () => {
 
     h2
       flex: 1
+      font-size: 1.1rem
 
   .movie-list
     display: grid

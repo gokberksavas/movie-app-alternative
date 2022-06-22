@@ -69,21 +69,19 @@ watch([page, timeWindow], getMovies);
       />
     </div>
     <div class="pagination">
-      <div 
-        class="prev-page"
+      <FontAwesomeIcon
+        icon="fa-solid fa-arrow-left" 
+        class="arrow-prev"
         @click="goPrevPage"
-      >
-        &lt;
-      </div>
+      />
       <div class="current-page">
         {{ page }}
       </div>
-      <div 
-        class="next-page"
+      <FontAwesomeIcon
+        icon="fa-solid fa-arrow-right" 
+        class="arrow-next"
         @click="goNextPage"
-      >
-        &gt;
-      </div>
+      />
     </div>
   </div>
 </template>
@@ -99,6 +97,7 @@ watch([page, timeWindow], getMovies);
 
     h2
       flex: 1
+      font-size: 1.1rem
 
   .movie-list
     display: grid
@@ -111,8 +110,20 @@ watch([page, timeWindow], getMovies);
   .pagination
     display: flex
     justify-content: center
-    padding: 10px 0
-  
+    align-items: center
+    margin: 20px 0
+
+    .arrow-next,
+    .arrow-prev
+      cursor: pointer
+      font-size: 1.2rem
+
+      &:hover
+        color: $pinkish-red
+
     div
-      padding: 5px
+      padding: 0
+      margin: 0 10px
+      font-size: 1.2rem
+      color: $darkblue
 </style>

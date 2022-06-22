@@ -15,7 +15,7 @@ const toggleSideBar = () => {
   <div class="header">
     <div class="header-content">
       <FontAwesomeIcon
-        icon="fa-solid fa-right-from-bracket"
+        icon="fa-solid fa-align-justify"
         class="sidebar-btn"
         :class="{'sidebar-active': sideBarStatus}"
         @click="toggleSideBar"
@@ -31,11 +31,12 @@ const toggleSideBar = () => {
 .header
   height: 110px
   padding: 10px
-  background-color: cadetblue
+  background-color: $darkblue
+  color: $icy-white
   z-index: 3
   position: sticky
   top: 0
-  font-size: 3rem
+  font-size: 2.5rem
 
   .header-content
     display: flex
@@ -47,9 +48,10 @@ const toggleSideBar = () => {
       transform: rotateY(0deg)
       font-size: 1.5rem
       padding: 10px
+      cursor: pointer
 
       &:hover
-        color: #ffffff
+        color: $lightblue
 
       &.sidebar-active
         transform: rotateY(180deg)
@@ -57,4 +59,5 @@ const toggleSideBar = () => {
     .header-text
       flex: 1
       text-align: center
+      font-weight: 500
 </style>
