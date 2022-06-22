@@ -7,10 +7,10 @@ const props = defineProps({
 });
 
 const buttonConfig = [
-  { path: '/', text: 'Home' },
-  { path: '/popular', text: 'Popular'},
-  { path: '/trending', text: 'Trending'},
-  { path: '/favourites', text: 'Favourites' }
+  { path: '/', text: 'Home', icon: 'fa-solid fa-house' },
+  { path: '/popular', text: 'Popular', icon: 'fa-solid fa-fire' },
+  { path: '/trending', text: 'Trending', icon: 'fa-solid fa-arrow-trend-up' },
+  { path: '/favourites', text: 'Favourites', icon: 'fa-solid fa-star' }
 ];
 
 const route = useRoute();
@@ -38,6 +38,10 @@ router.afterEach(() => {
         :class="{'path-active': button.path === currentPath}"
       >
         <router-link :to="button.path">
+          <FontAwesomeIcon 
+            :icon="button.icon"
+            class="sidebar-btn-icon"
+          />
           {{ button.text }}
         </router-link>
       </div>
@@ -81,6 +85,9 @@ router.afterEach(() => {
       border-radius: 10px
       cursor: pointer
       color: #000000
+
+      .sidebar-btn-icon
+        margin-right: 5px
 
       &.path-active
         background-color: pink
