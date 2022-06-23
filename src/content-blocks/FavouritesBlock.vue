@@ -1,7 +1,10 @@
 <script setup>
-import FavouriteList from '@/components/movie-list/FavouriteList.vue';
+import MovieList from '@/components/movie-list/MovieList.vue';
 </script>
 
 <template>
-  <FavouriteList />
+  <MovieList
+    :block-title="'Favourite Movies'" 
+    :endpoint="'favourites'"
+  />
 </template>

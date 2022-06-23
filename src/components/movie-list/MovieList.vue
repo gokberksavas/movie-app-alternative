@@ -1,27 +1,42 @@
 <script setup>
-import movieEndpoint from '../../helpers/movie-endpoint';
-import { ref, onMounted, watch, computed, onUpdated } from 'vue';
-import MovieCard from '@/components/movie-list/components/MovieCard.vue';
-import { useRouter, useRoute } from 'vue-router';
-import FilterInput from '@/components/FilterInput.vue'
+import movieEndpoint from '../../helpers/movie-endpoint'
+import { ref, onMounted, watch, computed, onUpdated } from 'vue'
+import MovieCard from '@/components/movie-list/components/MovieCard.vue'
+import { useRoute } from 'vue-router'
+import favourite from '@/helpers/favourite'
+import FilterInput from '@/components/common/FilterInput.vue'
+import PaginationBlock from '@/components/common/PaginationBlock.vue'
 
 const props = defineProps({
   blockTitle: {
     type: String,
     default: 'Block Title',
   },
-  algorithm: {
+  endpoint: {
     type: String,
     default: 'popular',
   }
 });
 
-//initializing the state and getting initial movies
+//initializing the state
 const movies = ref([]);
 const timeWindow = ref('week');
+const route = useRoute();
+const maxPageCount = ref(1);
+
+const page = computed(() => {
+  return route.query.page || 1;
+});
  
-const getMovies = async () => {
-  movies.value = await movieEndpoint.getMovies(props.algorithm, page.value, timeWindow.value);
+const getMovies = async (endpoint) => {
+  if (endpoint === 'favourites') {
+    movies.value = favourite.getFavourites();
+  } else if (endpoint === 'trending' || endpoint === 'popular') {
+    const data = await movieEndpoint.getMovies(endpoint, page.value, timeWindow.value);
+
+    movies.value = data.results;
+    maxPageCount.value = data.total_pages;
+  }
 };
 
 const changeTimeWindow = (event) => {
@@ -30,29 +45,21 @@ const changeTimeWindow = (event) => {
   timeWindow.value = selectedTimeWindow;
 };
 
-onMounted(getMovies);
-
-//pagination with url parameters
-const router = useRouter();
-const route = useRoute();
-
-const page = computed(() => {
-  return route.query.page || 1;
-});
-
-const goPrevPage = () => {
-  page.value > 1 && router.push({ query: { page: parseInt(page.value) - 1 } });
+const handleUnfavourite = () => {
+  if (props.endpoint === 'favourites') {
+    getMovies(props.endpoint);
+  }
 };
 
-const goNextPage = () => {
-  router.push({ query: { page: parseInt(page.value) + 1 } });
-};
-
-watch([page, timeWindow], getMovies);
+onMounted(() => getMovies(props.endpoint));
+watch([page, timeWindow], () => getMovies(props.endpoint));
 </script>
 
 <template>
-  <div class="movie-list-wrapper">
+  <div
+    v-if="movies.length > 0" 
+    class="movie-list-wrapper"
+  >
     <div class="block-header">
       <h2>{{ blockTitle }}</h2>
       <FilterInput 
@@ -66,23 +73,12 @@ watch([page, timeWindow], getMovies);
         v-for="movie in movies" 
         :key="movie.id"
         :movie-data="movie"
+        @movieunfavourited="handleUnfavourite"
       />
     </div>
-    <div class="pagination">
-      <FontAwesomeIcon
-        icon="fa-solid fa-arrow-left" 
-        class="arrow-prev"
-        @click="goPrevPage"
-      />
-      <div class="current-page">
-        {{ page }}
-      </div>
-      <FontAwesomeIcon
-        icon="fa-solid fa-arrow-right" 
-        class="arrow-next"
-        @click="goNextPage"
-      />
-    </div>
+    <PaginationBlock
+      :max-page-count="maxPageCount"
+    />
   </div>
 </template>
 
@@ -106,24 +102,4 @@ watch([page, timeWindow], getMovies);
 
     @media screen and (min-width: 1440px)
       grid-template-columns: repeat(3, calc(100%/3 - 20px))
-
-  .pagination
-    display: flex
-    justify-content: center
-    align-items: center
-    margin: 20px 0
-
-    .arrow-next,
-    .arrow-prev
-      cursor: pointer
-      font-size: 1.2rem
-
-      &:hover
-        color: $pinkish-red
-
-    div
-      padding: 0
-      margin: 0 10px
-      font-size: 1.2rem
-      color: $darkblue
 </style>

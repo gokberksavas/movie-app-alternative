@@ -12,11 +12,11 @@ movieEndpoint.getMovies = async function (algorithm, page, timeWindow) {
   try {
     const res = await axios.get(`${common.BASE_URL}${endpoints[algorithm]}`);
 
-    return res.data.results;
+    return res.data;
   } catch (err) {
     console.log(err);
     console.error(err.code, err.response.data.status_message);
   }
-}
+};
 
 export default movieEndpoint;

@@ -1,6 +1,6 @@
 <script setup>
-import SideBar from '@/components/SideBar.vue'
-import PageHeader from '@/components/PageHeader.vue'
+import SideBar from '@/components/common/SideBar.vue'
+import PageHeader from '@/components/common/PageHeader.vue'
 import { ref } from '@vue/reactivity'
 
 const showSideBar = ref(false);

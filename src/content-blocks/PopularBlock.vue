@@ -5,6 +5,6 @@ import MovieList from '@/components/movie-list/MovieList.vue'
 <template>
   <MovieList
     :block-title="'Popular Movies'" 
-    :algorithm="'popular'"
+    :endpoint="'popular'"
   />
 </template>
