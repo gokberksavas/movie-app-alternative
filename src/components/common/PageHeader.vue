@@ -1,5 +1,6 @@
 <script setup>
 import { ref } from 'vue'
+import SearchBar from './SearchBar.vue';
 
 const emit = defineEmits(['togglesidebar']);
 const sideBarStatus = ref(false);
@@ -20,6 +21,7 @@ const toggleSideBar = () => {
         :class="{'sidebar-active': sideBarStatus}"
         @click="toggleSideBar"
       />
+      <SearchBar />
       <div class="header-text">
         The Movie App
       </div>

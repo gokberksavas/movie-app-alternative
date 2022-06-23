@@ -14,9 +14,21 @@ movieEndpoint.getMovies = async function (algorithm, page, timeWindow) {
 
     return res.data;
   } catch (err) {
-    console.log(err);
     console.error(err.code, err.response.data.status_message);
   }
 };
+
+movieEndpoint.searchMovies = async function (query, page) {
+  const searchEndpoint = `${common.BASE_URL}/search/movie?api_key=${common.API_KEY}&language=en-US&page=${page}
+    &include_adult=false&query=${query}`;
+
+  try {
+    const res = await axios.get(searchEndpoint);
+
+    return res.data;
+  } catch(err) {
+    console.error(err.code, err.response.data.status_message);
+  }
+}
 
 export default movieEndpoint;
