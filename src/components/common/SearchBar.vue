@@ -56,8 +56,6 @@ const vClickOutside = {
     document.body.addEventListener('click', (e) => handleClickOutside(e, el)());
   },
   unmounted: () => {
-    // eslint-disable-next-line no-debugger
-    debugger
     document.body.removeEventListener('click', resetSearch);
   }
 }
