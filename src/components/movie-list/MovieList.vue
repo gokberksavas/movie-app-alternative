@@ -4,7 +4,7 @@ import { ref, onMounted, watch, computed, onUpdated } from 'vue'
 import MovieCard from '@/components/movie-list/components/MovieCard.vue'
 import { useRoute } from 'vue-router'
 import favourite from '@/helpers/favourite'
-import FilterInput from '@/components/common/FilterInput.vue'
+import FilterInput from '@/components/movie-list/components/FilterInput.vue'
 import PaginationBlock from '@/components/common/PaginationBlock.vue'
 
 const props = defineProps({
@@ -51,24 +51,39 @@ const handleUnfavourite = () => {
   }
 };
 
+const removeAllFavourites = () => {
+  favourite.removeAll();
+  getMovies(props.endpoint);
+};
+
 onMounted(() => getMovies(props.endpoint));
 watch([page, timeWindow], () => getMovies(props.endpoint));
 </script>
 
 <template>
-  <div
-    v-if="movies.length > 0" 
+  <div 
+    v-if="movies.length > 0"
     class="movie-list-wrapper"
   >
     <div class="block-header">
       <h2>{{ blockTitle }}</h2>
       <FilterInput 
-        v-if="props.algorithm === 'trending'" 
+        v-if="props.endpoint === 'trending'" 
         :options="['Week', 'Day']"
         @dropdownchanged="changeTimeWindow($event)"
       />
+      <div
+        v-if="props.endpoint === 'favourites'" 
+        class="remove-all"
+        @click="removeAllFavourites"
+      >
+        <FontAwesomeIcon icon="fa-solid fa-trash-can" />
+      </div>
     </div>
-    <div class="movie-list">
+    <div
+      v-if="movies.length > 0"  
+      class="movie-list"
+    >
       <MovieCard
         v-for="movie in movies" 
         :key="movie.id"
@@ -77,6 +92,7 @@ watch([page, timeWindow], () => getMovies(props.endpoint));
       />
     </div>
     <PaginationBlock
+      v-if="movies.length > 0"
       :max-page-count="maxPageCount"
     />
   </div>
@@ -94,6 +110,18 @@ watch([page, timeWindow], () => getMovies(props.endpoint));
     h2
       flex: 1
       font-size: 1.1rem
+
+    .remove-all
+      background-color: $pinkish-red
+      color: $icy-white
+      padding: 7.5px 12px
+      font-size: 0.8rem
+      border-radius: 5px
+      user-select: none
+
+      &:active
+       box-shadow: inset 0px 0px 5px 2px #8f0813
+
 
   .movie-list
     display: grid

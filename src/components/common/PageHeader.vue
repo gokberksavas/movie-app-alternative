@@ -39,6 +39,7 @@ const toggleSideBar = () => {
   position: sticky
   top: 0
   font-size: 2.5rem
+  width: 100%
 
   .header-content
     display: flex
@@ -62,4 +63,7 @@ const toggleSideBar = () => {
       flex: 1
       text-align: center
       font-weight: 500
+      position: absolute
+      width: 400px
+      left: calc(50% - 200px)
 </style>

@@ -4,101 +4,116 @@ import movieEndpoint from '@/helpers/movie-endpoint'
 import { ref } from 'vue'
 import SearchResultList from './SearchResultList.vue'
 
-const lastQuery = ref('');
-const lastQueryPage = ref();
+const showInput = ref(false);
 const searchResults = ref([]);
+const searchQuery = ref('');
+const queryPage = ref(1);
+const maxPageCount = ref(1);
 
-const getSearchResults = Utils.debounce(async (e) => {
-  let searchQuery = e.target.value;
-
-  if (searchQuery.length < 3) {
-    searchResults.value = [];
+const getSearchResults = async (query, page) => {
+  if (query.length < 3) {
+    resetResultsAndPage();
 
     return false;
   }
 
-  lastQuery.value = searchQuery;
-  lastQueryPage.value = 1;
-  
+  const data = await movieEndpoint.searchMovies(query, page);
 
-  if (searchQuery.length >= 3) {
-    const data = await movieEndpoint.searchMovies(lastQuery.value, lastQueryPage.value);
-
+  if (page === 1) {
     searchResults.value = data.results;
+  } else if (page > 1) {
+    searchResults.value = searchResults.value.concat(data.results);
   }
-}, 500);
 
-const getNextSearchResults = async () => {
-  lastQueryPage.value++;
-
-  const data = await movieEndpoint.searchMovies(lastQuery.value, lastQueryPage.value);
-  const shownMovies = searchResults.value;
-
-  searchResults.value = shownMovies.concat(data.results);
+  queryPage.value = data.page;
+  maxPageCount.value = data.total_pages;
 };
 
-const resetSearch = () => {
+const resetResultsAndPage = () => {
   searchResults.value = [];
-  lastQuery.value = '';
-  lastQueryPage.value = 1;
-}
+  queryPage.value = 1;
+};
 
-const handleClickOutside = (e, el) => {
-  if (!e.path.includes(el)) {
-    return resetSearch;
-  } else {
-    return () => {};
-  }
-}
+const handleInput = Utils.debounce(() => {
+  resetResultsAndPage();
 
-const vClickOutside = {
-  mounted: (el) => {
-    document.body.addEventListener('click', (e) => handleClickOutside(e, el)());
-  },
-  unmounted: () => {
-    document.body.removeEventListener('click', resetSearch);
-  }
-}
+  getSearchResults(searchQuery.value, 1);
+}, 500);
+
+const handleClickOutside = () => {
+  showInput.value = false;
+  searchQuery.value = '';
+  searchResults.value = [];
+  queryPage.value = 1;
+};
 </script>
 
 <template>
-  <div 
-    v-click-outside="resetSearch"
+  <div
+    v-clickoutside="handleClickOutside"
     class="search-bar-wrapper"
   >
-    <div class="input-wrapper">
+    <div 
+      class="input-wrapper"
+      :class="{'input-hidden': !showInput}"
+    >
       <FontAwesomeIcon
         class="search-icon"
         icon="fa-solid fa-magnifying-glass"
+        @click="showInput = !showInput"
       />
       <input
-        v-model="lastQuery"
+        v-model="searchQuery"
+        class="search-input"
         type="text"
         placeholder="Search for movies..."
-        @input="getSearchResults"
+        @input="handleInput"
       >
     </div>
     <SearchResultList
-      v-if="searchResults.length > 0"
+      v-if="searchResults.length > 0 && showInput"
       :movie-array="searchResults"
-    >
-      <template #showmore>
-        <button @click="getNextSearchResults">
-          Show more
-        </button>
-      </template>
-    </SearchResultList>
+      :show-button="maxPageCount !== queryPage"
+      @showmoreresults="getSearchResults(searchQuery, queryPage + 1)"
+    />
   </div>
 </template>
 
 <style lang="sass" scoped>
 .search-bar-wrapper
   display: block
-  font-size: 1rem
   margin-left: 1.2rem
-  padding: 5px
+  padding: 10px 0
   position: relative
+  width: 26%
 
-  .search-icon
-    margin-right: 0.5rem
+  .input-wrapper
+    display: flex
+    align-items: center
+    width: 100%
+    transition: width 0.3s ease
+
+    &.input-hidden
+      width: 35px
+      overflow: hidden
+
+    .search-input
+      flex: 1
+      height: 35px
+      border-radius: 5px
+      padding: 0
+      border: none
+      padding: 2px 10px
+      min-width: 0 
+
+      &:focus-visible
+        outline: none 
+ 
+    .search-icon
+      margin-right: 0.5rem
+      font-size: 1.3rem
+      cursor: pointer
+
+      &:hover
+       color: $lightblue 
 </style>

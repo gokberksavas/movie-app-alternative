@@ -12,10 +12,9 @@ import {
   faAlignJustify,
   faArrowRight,
   faArrowLeft,
-  faMagnifyingGlass
+  faMagnifyingGlass,
+  faTrashCan
 } from '@fortawesome/free-solid-svg-icons'
-
-const app = createApp(App);
 
 library.add(
   faStar,
@@ -26,8 +25,26 @@ library.add(
   faAlignJustify,
   faArrowRight,
   faArrowLeft,
-  faMagnifyingGlass
-);
+  faMagnifyingGlass,
+  faTrashCan
+  );
+  
+const app = createApp(App);
+
+app.directive('clickoutside', {
+  mounted: function (el, binding) {
+    el.outsideHandler = (e) => {
+      if (!(e.target === el || el.contains(e.target))) {
+        binding.value();
+      }
+    };
+
+    document.body.addEventListener('click', el.outsideHandler);
+  },
+  unmounted: function (el) {
+    document.body.removeEventListener('click', el.outsideHandler);
+  }
+});
 
 app.use(router);
 app.component('FontAwesomeIcon', FontAwesomeIcon);

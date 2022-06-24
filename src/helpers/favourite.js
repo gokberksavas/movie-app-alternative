@@ -38,4 +38,8 @@ favourite.removeFromFavourites = function (movieId) {
   this.setFavourites(newFavouriteStorage);
 };
 
+favourite.removeAll = function () {
+  window.localStorage.removeItem(common.STORAGE_NAME);
+};
+
 export default favourite;
