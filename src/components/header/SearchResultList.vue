@@ -28,7 +28,9 @@ const movies = computed(() => props.movieArray);
         :key="movie.id"
         class="search-result"
       >
-        {{ movie.title }}
+        <router-link :to="`/movie/${movie.id}`">
+          {{ movie.title }}
+        </router-link>
       </div>
       <button
         v-if="props.showButton"
@@ -52,6 +54,10 @@ const movies = computed(() => props.movieArray);
   color: $text-black
   padding: 10px
   width: calc(100% - 35px)
+
+  a
+    text-decoration: none
+    color: $darkblue
 
   .title
     font-size: 1.1rem
