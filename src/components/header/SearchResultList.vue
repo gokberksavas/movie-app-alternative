@@ -22,7 +22,7 @@ const movies = computed(() => props.movieArray);
     <div class="title">
       Search Results
     </div>
-    <div class="search-results-grid">
+    <div class="search-results-list">
       <div
         v-for="movie in movies"
         :key="movie.id"
@@ -55,9 +55,10 @@ const movies = computed(() => props.movieArray);
 
   .title
     font-size: 1.1rem
+    font-weight: 700
     margin-bottom: 20px
 
-  .search-results-grid
+  .search-results-list
     overflow-y: scroll
     scroll-behavior: smooth
     height: 350px
@@ -76,7 +77,8 @@ const movies = computed(() => props.movieArray);
       padding: 0 0.5rem
       line-height: 1.4
       height: 50px
-      font-size: 0.7rem
+      font-size: 0.9rem
+      font-weight: 500
       border: 1px solid $darkblue
       border-radius: 5px
       margin: 0 0.5rem 0.5rem 0

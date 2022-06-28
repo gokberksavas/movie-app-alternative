@@ -1,5 +1,5 @@
 <script setup>
-import common from '@/helpers/common';
+import Utils from '@/helpers/Utils';
 import { ref, computed } from 'vue'
 import favourite from '@/helpers/favourite'
 const props = defineProps({
@@ -15,10 +15,6 @@ const movie = computed(() => props.movieData);
 const  { id, release_date: release, poster_path: poster, title, overview, ...rest} = movie.value;
 
 const isFavourite = ref(favourite.isFavourite(id));
-
-const getFullImageUrl = (size, posterPath) => {
-  return `${common.IMG_BASE_URL}${common.POSTER_SIZES[size]}${posterPath}`;
-};
 
 const handleFavourite = () => {
   if (isFavourite.value) {
@@ -42,12 +38,14 @@ const handleFavourite = () => {
     />
     <img 
       class="poster" 
-      :src="getFullImageUrl(92, poster)"
+      :src="Utils.getFullImageUrl(92, poster)"
     >
     <div class="movie-info">
-      <div class="title">
-        {{ title }}
-      </div>
+      <router-link :to="`/movie/${movie.id}`">
+        <div class="title">
+          {{ title }}
+        </div>
+      </router-link>
       <div class="overview">
         {{ overview }}
       </div>
@@ -68,7 +66,6 @@ const handleFavourite = () => {
   border-radius: 5px
   box-shadow: -4px 3px 6px 2px #cccccc
   transition: transform 0.2s linear
-  cursor: pointer
 
   &:hover
     transform: scale(1.02)
@@ -101,13 +98,21 @@ const handleFavourite = () => {
     justify-content: flex-start
     padding: 10px 0
 
+    a
+      text-decoration: none !important
+
     .title
       margin-bottom: 10px
       font-weight: 700
       width: 90%
       text-overflow: ellipsis
       font-size: 0.8rem
+      cursor: pointer
+      color: $text-black
 
+      &:hover
+        color: $pinkish-red
+      
     .overview
       display: -webkit-box
       -webkit-box-orient: vertical

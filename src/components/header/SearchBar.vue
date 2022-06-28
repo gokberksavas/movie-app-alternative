@@ -82,7 +82,7 @@ const handleClickOutside = () => {
 <style lang="sass" scoped>
 .search-bar-wrapper
   display: block
-  margin-left: 1.2rem
+  margin-left: 0.5rem
   padding: 10px 0
   position: relative
   width: 26%
@@ -94,7 +94,7 @@ const handleClickOutside = () => {
     transition: width 0.3s ease
 
     &.input-hidden
-      width: 35px
+      width: 30px
       overflow: hidden
 
     .search-input
@@ -110,9 +110,11 @@ const handleClickOutside = () => {
         outline: none 
  
     .search-icon
+      display: block
       margin-right: 0.5rem
-      font-size: 1.3rem
+      font-size: 1.4rem
       cursor: pointer
+      min-width: 30px
 
       &:hover
        color: $lightblue 

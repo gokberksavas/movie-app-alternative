@@ -57,6 +57,7 @@ const removeAllFavourites = () => {
 };
 
 onMounted(() => getMovies(props.endpoint));
+
 watch([page, timeWindow], () => getMovies(props.endpoint));
 </script>
 
@@ -96,6 +97,10 @@ watch([page, timeWindow], () => getMovies(props.endpoint));
       :max-page-count="maxPageCount"
     />
   </div>
+  <div 
+    v-else
+    class="loading"
+  />
 </template>
 
 <style lang="sass" scoped>
@@ -130,4 +135,11 @@ watch([page, timeWindow], () => getMovies(props.endpoint));
 
     @media screen and (min-width: 1440px)
       grid-template-columns: repeat(3, calc(100%/3 - 20px))
+
+.loading
+  background-image: url('@/assets/loading.gif')
+  width: 100%
+  height: calc(100% - 110px)
+  background-repeat: no-repeat
+  background-position: center
 </style>

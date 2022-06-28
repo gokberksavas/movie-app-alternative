@@ -13,5 +13,11 @@ export default common = {
     500: 'w500',
     700: 'w700',
     original: 'original'
+  },
+  BACKDROP_SIZES: {
+    300: 'w300',
+    780: 'w780',
+    1280: 'w1280',
+    original: 'original'
   }
 };
