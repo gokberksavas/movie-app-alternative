@@ -20,7 +20,7 @@ favourite.isFavourite = function (movieId) {
 };
 
 favourite.addToFavourite = function (movie) {
-  if (this.isFavourite()) return false;
+  if (this.isFavourite(movie.id)) return false;
 
   const favouriteStorage = this.getFavourites(); 
 

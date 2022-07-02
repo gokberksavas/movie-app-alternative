@@ -14,7 +14,9 @@ import {
   faArrowLeft,
   faMagnifyingGlass,
   faTrashCan,
-  faChevronDown
+  faChevronDown,
+  faCircleCheck,
+  faCircleExclamation
 } from '@fortawesome/free-solid-svg-icons'
 
 library.add(
@@ -28,7 +30,9 @@ library.add(
   faArrowLeft,
   faMagnifyingGlass,
   faTrashCan,
-  faChevronDown
+  faChevronDown,
+  faCircleCheck,
+  faCircleExclamation
   );
   
 const app = createApp(App);

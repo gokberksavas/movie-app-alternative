@@ -1,7 +1,8 @@
 <script setup>
 import Utils from '@/helpers/Utils';
-import { ref, computed } from 'vue'
-import favourite from '@/helpers/favourite'
+import { computed } from 'vue'
+import FavouriteButton from '@/components/common/FavouriteButton.vue';
+
 const props = defineProps({
   movieData: {
     type: Object,
@@ -9,32 +10,17 @@ const props = defineProps({
   }
 });
 
-const emit = defineEmits(['movieunfavourited']);
+const emit = defineEmits(['movieunfavourited', 'moviefavourited']);
 
 const movie = computed(() => props.movieData);
 const  { id, release_date: release, poster_path: poster, title, overview, ...rest} = movie.value;
-
-const isFavourite = ref(favourite.isFavourite(id));
-
-const handleFavourite = () => {
-  if (isFavourite.value) {
-    favourite.removeFromFavourites(id);
-    emit('movieunfavourited');
-  } else {
-    favourite.addToFavourite(movie.value);
-  }
-
-  isFavourite.value = favourite.isFavourite(id);
-};
 </script>
 
 <template>
   <div class="movie-wrapper">
-    <FontAwesomeIcon 
-      class="star-icon"
-      :class="{'favourited': isFavourite }" 
-      icon="fa-solid fa-star"
-      @click="handleFavourite"
+    <FavouriteButton
+      :movie-data="movie"
+      @movieunfavourited="emit('movieunfavourited')"
     />
     <img 
       class="poster" 
@@ -72,23 +58,6 @@ const handleFavourite = () => {
 
   .poster
     margin-right: 10px
-
-  .star-icon
-    position: absolute
-    right: 10px
-    top: 10px
-    stroke: #999999
-    stroke-width: 30px
-    color: #ffffff
-    transition: transform 0.2s ease
-
-    &:hover
-      transform: scale(1.1)
-  
-  .star-icon.favourited
-    stroke: $pinkish-red
-    stroke-width: 30px
-    color: $pinkish-red
 
   .movie-info
     box-sizing: border-box

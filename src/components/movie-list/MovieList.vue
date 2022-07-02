@@ -1,6 +1,6 @@
 <script setup>
 import movieEndpoint from '../../helpers/movie-endpoint'
-import { ref, onMounted, watch, computed, onUpdated } from 'vue'
+import { ref, onMounted, watch, computed } from 'vue'
 import MovieCard from '@/components/movie-list/components/MovieCard.vue'
 import { useRoute } from 'vue-router'
 import favourite from '@/helpers/favourite'

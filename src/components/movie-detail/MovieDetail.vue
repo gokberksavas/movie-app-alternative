@@ -1,21 +1,25 @@
 <script setup>
-import Utils from '@/helpers/Utils';
+import Utils from '@/helpers/Utils'
 import { useRoute } from 'vue-router'
-import { onMounted, ref, watch } from 'vue';
+import { onMounted, ref, watch } from 'vue'
 import movieEndpoint from '@/helpers/movie-endpoint'
-import CollapsableText from './components/CollapsableText.vue';
+import CollapsableText from './components/CollapsableText.vue'
+import FavouriteButton from '../common/FavouriteButton.vue'
 
 const route = useRoute();
 const movie = ref({});
 
-onMounted(() => {
-  movieEndpoint.getMovieById(route.params.id)
-    .then((res) => { movie.value = res; });
+onMounted(async () => {
+  const res = await movieEndpoint.getMovieById(route.params.id);
+
+  movie.value = res;
 });
 
 watch(() => route.params.id, () => {
-  movieEndpoint.getMovieById(route.params.id)
-    .then((res) => { movie.value = res; });
+  if (typeof route.params.id !== 'undefined') {
+    movieEndpoint.getMovieById(route.params.id)
+      .then((res) => { movie.value = res; });
+  }
 });
 </script>
 
@@ -25,6 +29,9 @@ watch(() => route.params.id, () => {
       <img :src="Utils.getFullImageUrl(342, movie.poster_path)">
     </div>
     <div class="movie-detail">
+      <FavouriteButton
+        :movie-data="movie"
+      />
       <div class="movie-title">
         {{ movie.title }}
       </div>
@@ -48,6 +55,14 @@ watch(() => route.params.id, () => {
   max-width: 1440px
   min-width: 720px
 
+  .movie-detail
+    position: relative
+
+    .star-icon
+      font-size: 1.3rem !important
+      top: 5px
+      right: 0px
+
   .movie-tag-line
     color: $text-black
     font-size: 0.8rem
@@ -61,5 +76,5 @@ watch(() => route.params.id, () => {
   .movie-title
     font-weight: 600
     font-size: 1.5rem
-    margin: 0 0 0.5rem -3px
+    margin: 0 1.3rem 0.5rem -3px
 </style>

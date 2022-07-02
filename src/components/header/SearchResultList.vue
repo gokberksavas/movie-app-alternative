@@ -58,6 +58,9 @@ const movies = computed(() => props.movieArray);
   a
     text-decoration: none
     color: $darkblue
+    overflow: hidden
+    white-space: nowrap
+    text-overflow: ellipsis
 
   .title
     font-size: 1.1rem
